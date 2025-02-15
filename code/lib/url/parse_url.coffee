@@ -10,7 +10,7 @@ RECOGNIZED_SUBREDDIT_PATH_SEGMENTS =
 	['about', 'c', 'collection', 'comments', 'duplicates', 'mod', 'p', 'post', 'rules', 's', 'search', 'submit', 'w', 'wiki']
 RECOGNIZED_USER_PATH_SEGMENTS =
 	['comments', 'downvoted', 'gilded', 'hidden', 'm', 'messages', 'overview', 'posts', 'saved', 'submitted', 'upvoted']
-SORT_OPTIONS_FEED = 
+SORT_OPTIONS_FEED =
 	['best', 'controversial', 'hot', 'new', 'rising', 'search', 'top']
 SORT_OPTIONS_FEED_SEARCH =
 	['comments', 'relevance', 'new', 'top']
@@ -26,14 +26,14 @@ export default (url) ->
 	feed = {}
 	post = {}
 	wiki = {}
-	
+
 	preload = []
-	
+
 	unsupported = false
-	
+
 	#################
 	# Parse URL query
-	
+
 	query = new URLSearchParams(decodeURI(url.search))
 	feed.collection_id = query.get('c')
 	feed.filter = query.get('filter')
@@ -58,7 +58,7 @@ export default (url) ->
 	post.focus_comment_id = query.get('comment')
 	post.focus_comment_parent_count = query.get('context')
 	wiki.page_version = query.get('v')
-	
+
 	################
 	# Parse URL path
 
@@ -69,8 +69,7 @@ export default (url) ->
 	if path.at(-1) is ''
 		path.pop()
 	if !path[0]?
-		feed.type = 'popular_subreddits'
-		feed.base_page_id = api.ID('global_subreddits_popular', 99)
+		path[0] = 'reddit'
 	# Strip global SEO prefixes (but keep r/de).
 	if path[0] in GEO_SEO_PREFIXES and path[1] is 'r' and path[2]?
 		path.shift()
@@ -222,7 +221,7 @@ export default (url) ->
 
 	##############################
 	# Construct final route object
-	
+
 	if unsupported
 		return {}
 	else
